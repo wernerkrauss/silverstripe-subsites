@@ -1,6 +1,49 @@
 ---
 Name: mysiteconfig
-After: 'framework/*','cms/*'
+After:
+  - framework
+  - cms
 ---
-AssetAdmin:
+SilverStripe\AssetAdmin\Controller\AssetAdmin:
   treats_subsite_0_as_global: true
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - SiteTreeSubsites
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - ControllerSubsites
+SilverStripe\CMS\Controllers\CMSPageAddController:
+  extensions:
+    - CMSPageAddControllerExtension
+SilverStripe\Admin\LeftAndMain:
+  extensions:
+    - LeftAndMainSubsites
+    - ControllerSubsites
+Group:
+  extensions:
+    - GroupSubsites
+File:
+  extensions:
+    - FileSubsites
+SilverStripe\ErrorPage\ErrorPage:
+  extensions:
+    - ErrorPageSubsite
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - SiteConfigSubsites
+SilverStripe\Reports\Report:
+  extensions:
+    - SubsiteReportWrapper
+SilverStripe\AssetAdmin\Controller\AssetAdmin:
+  extensions:
+    - SubsiteMenuExtension
+SilverStripe\Admin\SecurityAdmin:
+  extensions:
+    - SubsiteMenuExtension
+SilverStripe\CMS\Controllers\CMSMain:
+  extensions:
+    - SubsiteMenuExtension
+SubsiteAdmin:
+  extensions:
+    - SubsiteMenuExtension
+

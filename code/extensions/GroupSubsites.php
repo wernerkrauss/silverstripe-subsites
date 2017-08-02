@@ -1,4 +1,16 @@
 <?php
+
+use SilverStripe\Security\Group;
+use SilverStripe\ORM\DB;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Core\Convert;
+use SilverStripe\Forms\OptionsetField;
+use SilverStripe\Forms\CheckboxSetField;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\Control\Cookie;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Security\PermissionProvider;
 /**
  * Extension for the Group object to add subsites support
  *
@@ -23,7 +35,7 @@ class GroupSubsites extends DataExtension implements PermissionProvider {
 	 */
 	function requireDefaultRecords() {
 		// Migration for Group.SubsiteID data from when Groups only had a single subsite
-		$groupFields = DB::field_list('Group');
+		$groupFields = DB::field_list(Group::class);
 		
 		// Detection of SubsiteID field is the trigger for old-style-subsiteID migration
 		if(isset($groupFields['SubsiteID'])) {
@@ -35,7 +47,7 @@ class GroupSubsites extends DataExtension implements PermissionProvider {
 			DB::query('UPDATE "Group" SET "AccessAllSubsites" = 1 WHERE "SubsiteID" = 0');
 			
 			// Move the field out of the way so that this migration doesn't get executed again
-			DB::get_schema()->renameField('Group', 'SubsiteID', '_obsolete_SubsiteID');
+			DB::get_schema()->renameField(Group::class, 'SubsiteID', '_obsolete_SubsiteID');
 			
 		// No subsite access on anything means that we've just installed the subsites module.
 		// Make all previous groups global-access groups

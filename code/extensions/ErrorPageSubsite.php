@@ -1,4 +1,9 @@
 <?php
+
+use SilverStripe\Core\Config\Config;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\ORM\DataExtension;
 class ErrorPageSubsite extends DataExtension {
 	
 	/**
@@ -28,7 +33,7 @@ class ErrorPageSubsite extends DataExtension {
 			$subdomainPart = "-{$subdomain}";
 		}
 		
-		if(singleton('SiteTree')->hasExtension('Translatable') && $locale && $locale != Translatable::default_locale()) {
+		if(singleton(SiteTree::class)->hasExtension('Translatable') && $locale && $locale != Translatable::default_locale()) {
 			$filepath = $static_filepath . "/error-{$statusCode}-{$locale}{$subdomainPart}.html";
 		} else {
 			$filepath = $static_filepath . "/error-{$statusCode}{$subdomainPart}.html";

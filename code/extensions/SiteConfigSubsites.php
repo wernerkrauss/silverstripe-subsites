@@ -1,5 +1,11 @@
 <?php
 
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\HiddenField;
+use SilverStripe\ORM\DataExtension;
+
 /**
  * Extension for the SiteConfig object to add subsites support
  */
@@ -28,7 +34,7 @@ class SiteConfigSubsites extends DataExtension {
 		$froms=$query->getFrom();
 		$froms=array_keys($froms);
 		$tableName = array_shift($froms);
-		if($tableName != 'SiteConfig') return;
+		if($tableName != SiteConfig::class) return;
 		$query->addWhere("\"$tableName\".\"SubsiteID\" IN ($subsiteID)");
 	}
 

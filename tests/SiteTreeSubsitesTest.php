@@ -1,5 +1,16 @@
 <?php
 
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\ErrorPage\ErrorPage;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Security\Member;
+use SilverStripe\Control\Session;
+use SilverStripe\CMS\Controllers\CMSMain;
+use SilverStripe\Core\Convert;
+use SilverStripe\Dev\TestOnly;
+
 class SiteTreeSubsitesTest extends BaseSubsiteTest {
 
 	static $fixture_file = 'subsites/tests/SubsiteTest.yml';
@@ -44,9 +55,9 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 	}
 	
 	function testBasicSanity() {
-		$this->assertTrue(singleton('SiteTree')->getSiteConfig() instanceof SiteConfig);
+		$this->assertTrue(singleton(SiteTree::class)->getSiteConfig() instanceof SiteConfig);
 		// The following assert is breaking in Translatable.
-		$this->assertTrue(singleton('SiteTree')->getCMSFields() instanceof FieldList);
+		$this->assertTrue(singleton(SiteTree::class)->getCMSFields() instanceof FieldList);
 		$this->assertTrue(singleton('SubsitesVirtualPage')->getCMSFields() instanceof FieldList);
 		$this->assertTrue(is_array(singleton('SiteTreeSubsites')->extraStatics()));
 	}
@@ -57,15 +68,15 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 		Subsite::changeSubsite($subsite1->ID);
 		$path = ErrorPage::get_filepath_for_errorcode(500);
 		
-		$static_path = Config::inst()->get('ErrorPage', 'static_filepath');
+		$static_path = Config::inst()->get(ErrorPage::class, 'static_filepath');
 		$expected_path = $static_path . '/error-500-'.$subsite1->domain().'.html';
 		$this->assertEquals($expected_path, $path);
 	}
 	
 	function testCanEditSiteTree() {
-		$admin = $this->objFromFixture('Member', 'admin');
-		$subsite1member = $this->objFromFixture('Member', 'subsite1member');
-		$subsite2member = $this->objFromFixture('Member', 'subsite2member');
+		$admin = $this->objFromFixture(Member::class, 'admin');
+		$subsite1member = $this->objFromFixture(Member::class, 'subsite1member');
+		$subsite2member = $this->objFromFixture(Member::class, 'subsite2member');
 		$mainpage = $this->objFromFixture('Page', 'home');
 		$subsite1page = $this->objFromFixture('Page', 'subsite1_home');
 		$subsite2page = $this->objFromFixture('Page', 'subsite2_home');
@@ -133,12 +144,12 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 	}
 	
 	function testPageTypesBlacklistInClassDropdown() {
-		$editor = $this->objFromFixture('Member', 'editor');
+		$editor = $this->objFromFixture(Member::class, 'editor');
 		Session::set("loggedInAs", $editor->ID);
 		
 		$s1 = $this->objFromFixture('Subsite','domaintest1');
 		$s2 = $this->objFromFixture('Subsite','domaintest2');
-		$page = singleton('SiteTree');
+		$page = singleton(SiteTree::class);
 		
 		$s1->PageTypeBlacklist = 'SiteTreeSubsitesTest_ClassA,ErrorPage';
 		$s1->write();
@@ -146,7 +157,7 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 		Subsite::changeSubsite($s1);
 		$settingsFields = $page->getSettingsFields()->dataFieldByName('ClassName')->getSource();
 		
-		$this->assertArrayNotHasKey('ErrorPage', 
+		$this->assertArrayNotHasKey(ErrorPage::class, 
 			$settingsFields
 		);
 		$this->assertArrayNotHasKey('SiteTreeSubsitesTest_ClassA', 
@@ -158,7 +169,7 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 
 		Subsite::changeSubsite($s2);
 		$settingsFields = $page->getSettingsFields()->dataFieldByName('ClassName')->getSource();
-		$this->assertArrayHasKey('ErrorPage', 
+		$this->assertArrayHasKey(ErrorPage::class, 
 			$settingsFields
 		);
 		$this->assertArrayHasKey('SiteTreeSubsitesTest_ClassA', 
@@ -170,7 +181,7 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 	}
 	
 	function testPageTypesBlacklistInCMSMain() {
-		$editor = $this->objFromFixture('Member', 'editor');
+		$editor = $this->objFromFixture(Member::class, 'editor');
 		Session::set("loggedInAs", $editor->ID);
 		
 		$cmsmain = new CMSMain();
@@ -184,14 +195,14 @@ class SiteTreeSubsitesTest extends BaseSubsiteTest {
 		Subsite::changeSubsite($s1);
 		$hints = Convert::json2array($cmsmain->SiteTreeHints());
 		$classes = $hints['Root']['disallowedChildren'];
-		$this->assertContains('ErrorPage', $classes);
+		$this->assertContains(ErrorPage::class, $classes);
 		$this->assertContains('SiteTreeSubsitesTest_ClassA', $classes);
 		$this->assertNotContains('SiteTreeSubsitesTest_ClassB', $classes);
 
 		Subsite::changeSubsite($s2);
 		$hints = Convert::json2array($cmsmain->SiteTreeHints());
 		$classes = $hints['Root']['disallowedChildren'];
-		$this->assertNotContains('ErrorPage', $classes);
+		$this->assertNotContains(ErrorPage::class, $classes);
 		$this->assertNotContains('SiteTreeSubsitesTest_ClassA', $classes);
 		$this->assertNotContains('SiteTreeSubsitesTest_ClassB', $classes);
 	}

@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Admin\LeftAndMain;
+
 /**
  * Section-agnostic PJAX controller.
  */

@@ -1,5 +1,10 @@
 <?php
 
+use SilverStripe\Assets\File;
+use SilverStripe\Assets\Folder;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Security\Member;
+
 class FileSubsitesTest extends BaseSubsiteTest {
 	static $fixture_file = 'subsites/tests/SubsiteTest.yml';
 	
@@ -11,13 +16,13 @@ class FileSubsitesTest extends BaseSubsiteTest {
 		$this->assertEquals(' * FileTitle', $file->alternateTreeTitle());
 		$file->SubsiteID = $this->objFromFixture('Subsite', 'domaintest1')->ID;
 		$this->assertEquals('FileTitle', $file->getTreeTitle());
-		$this->assertTrue(singleton('Folder')->getCMSFields() instanceof FieldList);
+		$this->assertTrue(singleton(Folder::class)->getCMSFields() instanceof FieldList);
 		Subsite::changeSubsite(1);
 		$this->assertEquals($file->cacheKeyComponent(), 'subsite-1');
 	}
 	
 	function testWritingSubsiteID() {
-		$this->objFromFixture('Member', 'admin')->logIn();
+		$this->objFromFixture(Member::class, 'admin')->logIn();
 		
 		$subsite = $this->objFromFixture('Subsite', 'domaintest1');
 		FileSubsites::$default_root_folders_global = true;
@@ -55,7 +60,7 @@ class FileSubsitesTest extends BaseSubsiteTest {
 	}
 
 	function testSubsitesFolderDropdown() {
-		$this->objFromFixture('Member', 'admin')->logIn();
+		$this->objFromFixture(Member::class, 'admin')->logIn();
 
 		$file = new Folder();
 

@@ -1,11 +1,16 @@
 <?php
 
+use SilverStripe\Security\Member;
+use SilverStripe\Control\Session;
+use SilverStripe\Control\Director;
+use SilverStripe\CMS\Controllers\CMSMain;
+
 class SubsiteAdminTest extends BaseSubsiteTest {
 	static $fixture_file = 'subsites/tests/SubsiteTest.yml';
 
     function adminLoggedInSession() {
         return new Session(array(
-            'loggedInAs' => $this->idFromFixture('Member', 'admin')
+            'loggedInAs' => $this->idFromFixture(Member::class, 'admin')
         ));
     }
 
@@ -31,7 +36,7 @@ class SubsiteAdminTest extends BaseSubsiteTest {
 	 * of whether he is in a subsite-specific group or not.
 	 */
 	function testMainsiteAdminCanAccessAllSubsites() {
-		$member = $this->objFromFixture('Member', 'admin');
+		$member = $this->objFromFixture(Member::class, 'admin');
 		Session::set("loggedInAs", $member->ID);
 		
 		$cmsMain = new CMSMain();
