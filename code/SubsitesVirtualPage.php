@@ -3,7 +3,6 @@
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\View\ArrayData;
-use SilverStripe\Control\Session;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
@@ -17,31 +16,32 @@ class SubsitesVirtualPage extends VirtualPage
 {
     private static $description = 'Displays the content of a page on another subsite';
 
-    private static $db = array(
+    private static $db = [
         'CustomMetaTitle' => 'Varchar(255)',
         'CustomMetaKeywords' => 'Varchar(255)',
         'CustomMetaDescription' => 'Text',
         'CustomExtraMeta' => 'HTMLText',
-    );
+    ];
 
     public function getCMSFields()
     {
+        $session = Controller::curr()->getRequest()->getSession();
         $fields = parent::getCMSFields();
 
-        $subsites = DataObject::get('Subsite');
+        $subsites = Subsite::get();
         if (!$subsites) {
-            $subsites = new ArrayList();
+            $subsites = ArrayList::create();
         } else {
             $subsites = ArrayList::create($subsites->toArray());
         }
 
-        $subsites->push(new ArrayData(array('Title' => 'Main site', 'ID' => 0)));
+        $subsites->push(ArrayData::create(['Title' => 'Main site', 'ID' => 0]));
 
-        $subsiteSelectionField = new DropdownField(
+        $subsiteSelectionField = DropdownField::create(
             'CopyContentFromID_SubsiteID',
             _t('SubsitesVirtualPage.SubsiteField', 'Subsite'),
             $subsites->map('ID', 'Title'),
-            ($this->CopyContentFromID) ? $this->CopyContentFrom()->SubsiteID : Session::get('SubsiteID')
+            ($this->CopyContentFromID) ? $this->CopyContentFrom()->SubsiteID : $session->get('SubsiteID')
         );
         $fields->addFieldToTab(
             'Root.Main',
@@ -50,7 +50,7 @@ class SubsitesVirtualPage extends VirtualPage
         );
 
         // Setup the linking to the original page.
-        $pageSelectionField = new SubsitesTreeDropdownField(
+        $pageSelectionField = SubsitesTreeDropdownField::create(
             'CopyContentFromID',
             _t('VirtualPage.CHOOSE', 'Choose a page to link to'),
             SiteTree::class,
@@ -74,7 +74,7 @@ class SubsitesVirtualPage extends VirtualPage
             $fields->removeByName('VirtualPageContentLinkLabel');
             $fields->addFieldToTab(
                 'Root.Main',
-                $linkToContentLabelField = new LabelField('VirtualPageContentLinkLabel', $linkToContent),
+                $linkToContentLabelField = LabelField::create('VirtualPageContentLinkLabel', $linkToContent),
                 'Title'
             );
             $linkToContentLabelField->setAllowHTML(true);
