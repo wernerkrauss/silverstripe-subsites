@@ -1,8 +1,6 @@
 <?php
 
 use SilverStripe\CMS\Model\SiteTree;
-use SilverStripe\ORM\Queries\SQLSelect;
-use SilverStripe\ORM\DataQuery;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Core\Config\Config;
@@ -45,7 +43,7 @@ class SiteTreeSubsites extends DataExtension
     /**
      * Update any requests to limit the results to the current site.
      */
-    public function augmentSQL(SQLSelect $query, DataQuery &$dataQuery = null)
+    public function augmentSQL(SilverStripe\ORM\Queries\SQLSelect $query, SilverStripe\ORM\DataQuery $dataQuery = null)
     {
         if (Subsite::$disable_subsite_filter) {
             return;

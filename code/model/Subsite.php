@@ -883,10 +883,10 @@ JS;
     /**
      * Duplicate this subsite.
      */
-    public function duplicate($doWrite = true)
+    public function duplicate($doWrite = true, $manyMany = 'many_many')
     {
         $session = Controller::curr()->getRequest()->getSession();
-        $duplicate = parent::duplicate($doWrite);
+        $duplicate = parent::duplicate($doWrite, $manyMany);
 
         $oldSubsiteID = $session->get('SubsiteID');
         self::changeSubsite($this->ID);
