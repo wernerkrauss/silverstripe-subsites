@@ -8,7 +8,7 @@ nb_NO:
     SECURITYTABTITLE: subdomener
   SubsiteAdmin:
     MENUTITLE: Underdomener
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domain
     PLURALNAME: 'Subsite Domains'
     SINGULARNAME: 'Subsite Domain'

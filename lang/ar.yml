@@ -19,7 +19,7 @@ ar:
   SiteTreeSubsites:
     CopyAction: نسخ
     CopyToSubsite: 'نسخ الصفحة في موقع فرعي'
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 'نسخ الهيكل من:'
     CopyMessage: 'إنشاء نسخة من {title}'
     CustomExtraMeta: 'العلامات الوصفية المخصصة'
@@ -40,7 +40,7 @@ ar:
     ValidateTitle: 'الرجاء إضافة "عنوان"'
   SubsiteAdmin:
     MENUTITLE: 'مواقع فرعية'
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: نطاق
     PLURALNAME: 'نطاقات موقع فرعي'
     SINGULARNAME: 'نطاق موقع فرعي'

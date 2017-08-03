@@ -3,7 +3,7 @@ id:
     SubsiteFieldLabel: Subsitus
   GroupSubsites:
     SECURITYTABTITLE: Subsitus
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     CustomMetaDescription: Deskripsi
     CustomMetaKeywords: 'Kata kunci'
     CustomMetaTitle: Judul

@@ -8,7 +8,7 @@ tr_TR:
     SECURITYTABTITLE: 'Alt Siteler'
   SubsiteAdmin:
     MENUTITLE: 'Alt Siteler'
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domain
     PLURALNAME: 'Subsite Domains'
     SINGULARNAME: 'Subsite Domain'

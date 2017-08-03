@@ -187,7 +187,8 @@ class Subsite extends DataObject
 
         // Set locale
         if (is_object($subsite) && $subsite->Language !== '') {
-            $locale = (new IntlLocales())->localeFromLang($subsite->Language);
+            $locales = IntlLocales::create();
+            $locale = $locales->localeFromLang($subsite->Language);
             if ($locale) {
                 i18n::set_locale($locale);
             }
@@ -240,7 +241,7 @@ class Subsite extends DataObject
             $subsiteIDs = array_unique($matchingDomains->column('SubsiteID'));
             $subsiteDomains = array_unique($matchingDomains->column('Domain'));
             if (sizeof($subsiteIDs) > 1) {
-                throw new UnexpectedValueException(sprintf(
+                throw UnexpectedValueException::create(sprintf(
                     "Multiple subsites match on '%s': %s",
                     $host,
                     implode(',', $subsiteDomains)
@@ -317,7 +318,7 @@ class Subsite extends DataObject
         if ($includeMainSite) {
             $subsites = $subsites->toArray();
 
-            $mainSite = new self();
+            $mainSite = self::create();
             $mainSite->Title = $mainSiteTitle;
             array_unshift($subsites, $mainSite);
 
@@ -340,13 +341,13 @@ class Subsite extends DataObject
             $member = Member::currentUser();
         }
         if (!$member) {
-            return new ArrayList();
+            return ArrayList::create();
         }
         if (!is_object($member)) {
             $member = DataObject::get_by_id(Member::class, $member);
         }
 
-        $subsites = new ArrayList();
+        $subsites = ArrayList::create();
 
         // Collect subsites for all sections.
         $menu = CMSMenu::get_viewable_menu_items();
@@ -390,7 +391,7 @@ class Subsite extends DataObject
             $member = Member::currentUser();
         }
         if (!$member) {
-            return new ArrayList();
+            return ArrayList::create();
         }
         if (!is_object($member)) {
             $member = DataObject::get_by_id(Member::class, $member);
@@ -426,7 +427,7 @@ class Subsite extends DataObject
             );
 
         if (!$subsites) {
-            $subsites = new ArrayList();
+            $subsites = ArrayList::create();
         }
 
         /** @var DataList $rolesSubsites */
@@ -452,7 +453,7 @@ class Subsite extends DataObject
             return $rolesSubsites;
         }
 
-        $subsites = new ArrayList($subsites->toArray());
+        $subsites = ArrayList::create($subsites->toArray());
 
         if ($rolesSubsites) {
             foreach ($rolesSubsites as $subsite) {
@@ -469,7 +470,7 @@ class Subsite extends DataObject
             if (self::hasMainSitePermission($member, $permCode)) {
                 $subsites = $subsites->toArray();
 
-                $mainSite = new self();
+                $mainSite = self::create();
                 $mainSite->Title = $mainSiteTitle;
                 array_unshift($subsites, $mainSite);
                 $subsites = ArrayList::create($subsites);
@@ -664,23 +665,23 @@ class Subsite extends DataObject
     public function getCMSFields()
     {
         if ($this->ID != 0) {
-            $domainTable = new GridField(
+            $domainTable = GridField::create(
                 'Domains',
-                _t('Subsite.DomainsListTitle', 'Domains'),
+                _t('SilverStripe\Subsites\Model\Subsite.DomainsListTitle', 'Domains'),
                 $this->Domains(),
                 GridFieldConfig_RecordEditor::create(10)
             );
         } else {
-            $domainTable = new LiteralField(
+            $domainTable = LiteralField::create(
                 'Domains',
                 '<p>'._t(
-                    'Subsite.DOMAINSAVEFIRST',
+                    'SilverStripe\Subsites\Model\Subsite.DOMAINSAVEFIRST',
                     'You can only add domains after saving for the first time'
                 ).'</p>'
             );
         }
 
-        $languageSelector = new DropdownField(
+        $languageSelector = DropdownField::create(
             'Language',
             $this->fieldLabel('Language'),
             Injector::inst()->get(IntlLocales::class)->getLocales()
@@ -693,40 +694,40 @@ class Subsite extends DataObject
         }
         asort($pageTypeMap);
 
-        $fields = new FieldList(
-            $subsiteTabs = new TabSet(
+        $fields = FieldList::create(
+            $subsiteTabs = TabSet::create(
                 'Root',
-                new Tab(
+                Tab::create(
                     'Configuration',
-                    _t('Subsite.TabTitleConfig', 'Configuration'),
-                    new HeaderField('ConfigForSubsiteHeaderField', $this->getClassName().' configuration'),
-                    new TextField('Title', $this->fieldLabel('Title'), $this->Title),
-                    new HeaderField(
+                    _t('SilverStripe\Subsites\Model\Subsite.TabTitleConfig', 'Configuration'),
+                    HeaderField::create('ConfigForSubsiteHeaderField', $this->getClassName().' configuration'),
+                    TextField::create('Title', $this->fieldLabel('Title'), $this->Title),
+                    HeaderField::create(
                         'DomainsForSubsiteHeaderField',
-                        _t('Subsite.DomainsHeadline', 'Domains for this subsite')
+                        _t('SilverStripe\Subsites\Model\Subsite.DomainsHeadline', 'Domains for this subsite')
                     ),
                     $domainTable,
                     $languageSelector,
-                    // new TextField('RedirectURL', 'Redirect to URL', $this->RedirectURL),
-                    new CheckboxField('DefaultSite', $this->fieldLabel('DefaultSite'), $this->DefaultSite),
-                    new CheckboxField('IsPublic', $this->fieldLabel('IsPublic'), $this->IsPublic),
-                    new DropdownField('Theme', $this->fieldLabel('Theme'), $this->allowedThemes(), $this->Theme),
-                    new LiteralField(
+                    // TextField::create('RedirectURL', 'Redirect to URL', $this->RedirectURL),
+                    CheckboxField::create('DefaultSite', $this->fieldLabel('DefaultSite'), $this->DefaultSite),
+                    CheckboxField::create('IsPublic', $this->fieldLabel('IsPublic'), $this->IsPublic),
+                    DropdownField::create('Theme', $this->fieldLabel('Theme'), $this->allowedThemes(), $this->Theme),
+                    LiteralField::create(
                         'PageTypeBlacklistToggle',
                         sprintf(
                             '<div class="field"><a href="#" id="PageTypeBlacklistToggle">%s</a></div>',
-                            _t('Subsite.PageTypeBlacklistField', 'Disallow page types?')
+                            _t('SilverStripe\Subsites\Model\Subsite.PageTypeBlacklistField', 'Disallow page types?')
                         )
                     ),
-                    new CheckboxSetField(
+                    CheckboxSetField::create(
                         'PageTypeBlacklist',
                         false,
                         $pageTypeMap
                     )
                 )
             ),
-            new HiddenField('ID', '', $this->ID),
-            new HiddenField('IsSubsite', '', 1)
+            HiddenField::create('ID', '', $this->ID),
+            HiddenField::create('IsSubsite', '', 1)
         );
 
         $subsiteTabs->addExtraClass('subsite-model');
@@ -802,7 +803,7 @@ class Subsite extends DataObject
     {
         $result = parent::validate();
         if (!$this->Title) {
-            $result->error(_t('Subsite.ValidateTitle', 'Please add a "Title"'));
+            $result->error(_t('SilverStripe\Subsites\Model\Subsite.ValidateTitle', 'Please add a "Title"'));
         }
 
         return $result;
@@ -890,7 +891,7 @@ class Subsite extends DataObject
     {
         $newItem = $this->duplicate();
         $message = _t(
-            'Subsite.CopyMessage',
+            'SilverStripe\Subsites\Model\Subsite.CopyMessage',
             'Created a copy of {title}',
             ['title' => Convert::raw2js($this->Title)]
         );

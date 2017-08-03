@@ -26,7 +26,7 @@ eo:
     CopyToSubsite: 'Kopii paĝon al subretejo'
     CopyToSubsiteWithChildren: 'Ĉu inkluzivi  paĝidojn?'
     SubsiteOperations: 'Subretejaj operacioj'
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 'Kopii strukturon de:'
     CopyMessage: 'Kreis kopion de {title}'
     CustomExtraMeta: 'Propraj meta-etikedoj'
@@ -47,7 +47,7 @@ eo:
     ValidateTitle: 'Bonvole aldonu "Titolon"'
   SubsiteAdmin:
     MENUTITLE: Subretejoj
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domajno
     DOMAIN_DESCRIPTION: 'Gastiga nomo de ĉi tiu subretejo (ellasu protokolon). Permesas ĵokerojn (*).'
     IS_PRIMARY: 'Ĉu unuaranga domajno?'

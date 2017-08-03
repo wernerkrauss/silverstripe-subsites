@@ -8,7 +8,7 @@ nl:
     ACCESSONLY: 'Alleen deze subsites'
     ACCESSRADIOTITLE: 'Geef deze groep rechten aan'
     SECURITYTABTITLE: Subsites
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     CustomMetaDescription: Omschrijving
     CustomMetaTitle: Titel
     PLURALNAME: Subsites
@@ -17,7 +17,7 @@ nl:
     TabTitleConfig: Configuratie
   SubsiteAdmin:
     MENUTITLE: Subsites
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domein
     PLURALNAME: 'Subsite Domeinen'
     SINGULARNAME: 'Subsite Domein'

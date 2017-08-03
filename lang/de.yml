@@ -24,7 +24,7 @@ de:
   SiteTreeSubsites:
     CopyAction: Kopieren
     CopyToSubsite: 'Seite auf Subseite Kopieren'
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 'Struktur kopieren von:'
     CopyMessage: 'Kopie von {title} erstellt'
     CustomExtraMeta: 'Benutzerdefinierte Meta-Tags'
@@ -45,7 +45,7 @@ de:
     ValidateTitle: 'Bitte geben Sie einen Titel an'
   SubsiteAdmin:
     MENUTITLE: Subsites
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domain
     DOMAIN_DESCRIPTION: 'Hostname dieser Subsite (ohne Protokol). Joker (*) ist erlaubt.'
     IS_PRIMARY: 'Ist Hauptdomain?'

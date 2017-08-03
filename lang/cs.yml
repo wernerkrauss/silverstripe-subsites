@@ -4,7 +4,7 @@ cs:
     LOGOUT: 'Odhlásit se'
   SiteTreeSubsites:
     CopyAction: Kopírovat
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     CustomExtraMeta: 'Vlastní meta tagy'
     CustomMetaDescription: Popis
     CustomMetaKeywords: 'Klíčová slova'
@@ -18,7 +18,7 @@ cs:
     ValidateTitle: 'Prosím vložte "Název"'
   SubsiteAdmin:
     MENUTITLE: Subsites
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Doména
     PLURALNAME: 'Domény webů'
     SINGULARNAME: 'Doména webu'

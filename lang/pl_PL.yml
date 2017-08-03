@@ -8,7 +8,7 @@ pl_PL:
     SECURITYTABTITLE: Podwitryny
   SubsiteAdmin:
     MENUTITLE: Podwitryny
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domena
     PLURALNAME: 'Domeny podwitryny'
     SINGULARNAME: 'Domena podwitryny'

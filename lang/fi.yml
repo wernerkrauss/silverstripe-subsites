@@ -19,7 +19,7 @@ fi:
   SiteTreeSubsites:
     CopyAction: Kopioi
     CopyToSubsite: 'Kopioi sivu alisivustolle'
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 'Kopioi rakenne kohteesta:'
     CopyMessage: 'Luotiin kopio lähteestä {title}'
     CustomExtraMeta: 'Omat Meta-tagit'
@@ -40,7 +40,7 @@ fi:
     ValidateTitle: 'Lisää "Otsikko"'
   SubsiteAdmin:
     MENUTITLE: Alasivustot
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domain
     PLURALNAME: 'Alisivuston domain-osoitteet'
     SINGULARNAME: 'Alisivuston domain-osoite'

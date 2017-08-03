@@ -1,82 +1,82 @@
 en:
   ASSETADMIN:
-    SUBSITENOTICE: 'Folders and files created in the main site are accessible by all subsites.'
+    SUBSITENOTICE: "Folders and files created in the main site are accessible by all subsites."
   DomainNameField:
-    INVALID_DOMAIN: 'Invalid domain name'
+    INVALID_DOMAIN: "Invalid domain name"
   FileSubsites:
-    AllSitesDropdownOpt: 'All sites'
+    AllSitesDropdownOpt: "All sites"
     SubsiteFieldLabel: Subsite
   GridFieldAddFromTemplateButton:
-    AddFromTemplate: 'Add New from Template'
+    AddFromTemplate: "Add New from Template"
   GroupSubsites:
-    ACCESSALL: 'All subsites'
-    ACCESSONLY: 'Only these subsites'
-    ACCESSRADIOTITLE: 'Give this group access to'
-    GlobalGroup: 'global group'
-    MANAGE_SUBSITES: 'Manage subsites for groups'
-    MANAGE_SUBSITES_HELP: 'Ability to limit the permissions for a group to one or more subsites.'
+    ACCESSALL: "All subsites"
+    ACCESSONLY: "Only these subsites"
+    ACCESSRADIOTITLE: "Give this group access to"
+    GlobalGroup: "global group"
+    MANAGE_SUBSITES: "Manage subsites for groups"
+    MANAGE_SUBSITES_HELP: "Ability to limit the permissions for a group to one or more subsites."
     SECURITYTABTITLE: Subsites
   LeftAndMainSubsites:
-    Saved: 'Saved, please update related pages.'
+    Saved: "Saved, please update related pages."
   LeftAndMain_Menu:
     Hello: Hi
-    LOGOUT: 'Log out'
-  SiteTreeSubsites:
-    CopyAction: Copy
-    CopyToSubsite: 'Copy page to subsite'
-    CopyToSubsiteWithChildren: 'Include children pages?'
-    SubsiteOperations: 'Subsite Operations'
-  Subsite:
-    COPYSTRUCTURE: 'Copy structure from:'
-    CopyMessage: 'Created a copy of {title}'
-    CustomExtraMeta: 'Custom Meta Tags'
+    LOGOUT: "Log out"
+  SilverStripe\Subsites\Model\Subsite:
+    COPYSTRUCTURE: "Copy structure from:"
+    CopyMessage: "Created a copy of {title}"
+    CustomExtraMeta: "Custom Meta Tags"
     CustomMetaDescription: Description
     CustomMetaKeywords: Keywords
     CustomMetaTitle: Title
-    DOMAINSAVEFIRST: 'You can only add domains after saving for the first time'
-    DomainsHeadline: 'Domains for this subsite'
+    DOMAINSAVEFIRST: "You can only add domains after saving for the first time"
+    DomainsHeadline: "Domains for this subsite"
     DomainsListTitle: Domains
-    IsPublicHeaderField: 'Active subsite'
-    NOTEMPLATE: 'No template'
+    IsPublicHeaderField: "Active subsite"
+    NOTEMPLATE: "No template"
     PLURALNAME: Subsites
-    PageTypeBlacklistField: 'Disallow page types?'
+    PageTypeBlacklistField: "Disallow page types?"
     SINGULARNAME: Subsite
-    SiteConfigSubtitle: 'Your tagline here'
-    SiteConfigTitle: 'Your Site Name'
+    SiteConfigSubtitle: "Your tagline here"
+    SiteConfigTitle: "Your Site Name"
     TabTitleConfig: Configuration
-    ValidateTitle: 'Please add a "Title"'
+    ValidateTitle: "Please add a \"Title\""
+  SilverStripe\Subsites\Model\SubsiteDomain:
+    DOMAIN: Domain
+    DOMAIN_DESCRIPTION: "Hostname of this subsite (exclude protocol). Allows wildcards (*)."
+    IS_PRIMARY: "Is Primary Domain?"
+    PLURALNAME: "Subsite Domains"
+    PROTOCOL_AUTOMATIC: Automatic
+    PROTOCOL_DESCRIPTION: "Mark this as the default domain for this subsite"
+    PROTOCOL_HTTP: "http://"
+    PROTOCOL_HTTPS: "https://"
+    Protocol: Protocol
+    SINGULARNAME: "Subsite Domain"
+  SiteTreeSubsites:
+    CopyAction: Copy
+    CopyToSubsite: "Copy page to subsite"
+    CopyToSubsiteWithChildren: "Include children pages?"
+    SubsiteOperations: "Subsite Operations"
   SubsiteAdmin:
     MENUTITLE: Subsites
-  SubsiteDomain:
-    DOMAIN: Domain
-    DOMAIN_DESCRIPTION: 'Hostname of this subsite (exclude protocol). Allows wildcards (*).'
-    IS_PRIMARY: 'Is Primary Domain?'
-    PLURALNAME: 'Subsite Domains'
-    PROTOCOL_AUTOMATIC: Automatic
-    PROTOCOL_DESCRIPTION: 'Mark this as the default domain for this subsite'
-    PROTOCOL_HTTP: 'http://'
-    PROTOCOL_HTTPS: 'https://'
-    Protocol: Protocol
-    SINGULARNAME: 'Subsite Domain'
   SubsiteReportWrapper:
     ReportDropdown: Sites
   SubsiteXHRController:
     MENUTITLE: SubsiteXHRController
   Subsites:
-    DefaultSiteFieldLabel: 'Default site'
+    DefaultSiteFieldLabel: "Default site"
     DomainFieldLabel: Domain
-    IsPublicFieldLabel: 'Enable public access'
+    IsPublicFieldLabel: "Enable public access"
     LanguageFieldLabel: Language
-    MainSiteTitle: 'Main site'
-    PageTypeBlacklistFieldLabel: 'Page Type Blacklist'
-    PrimaryDomainFieldLabel: 'Primary Domain'
-    RedirectURLFieldLabel: 'Redirect URL'
+    MainSiteTitle: "Main site"
+    PageTypeBlacklistFieldLabel: "Page Type Blacklist"
+    PrimaryDomainFieldLabel: "Primary Domain"
+    RedirectURLFieldLabel: "Redirect URL"
     ThemeFieldLabel: Theme
-    TitleFieldLabel: 'Subsite Name'
+    TitleFieldLabel: "Subsite Name"
   SubsitesVirtualPage:
-    DESCRIPTION: 'Displays the content of a page on another subsite'
-    PLURALNAME: 'Base Pages'
-    SINGULARNAME: 'Subsites Virtual Page'
+    DESCRIPTION: "Displays the content of a page on another subsite"
+    PLURALNAME: "Base Pages"
+    SINGULARNAME: "Subsites Virtual Page"
     SubsiteField: Subsite
   VirtualPage:
-    EDITCONTENT: 'Click here to edit the content'
+    EDITCONTENT: "Click here to edit the content"

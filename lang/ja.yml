@@ -8,7 +8,7 @@ ja:
     SECURITYTABTITLE: サブサイト
   SubsiteAdmin:
     MENUTITLE: サブサイト
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: ドメイン
     PLURALNAME: サブサイトのドメイン
     SINGULARNAME: サブサイトのドメイン
