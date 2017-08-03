@@ -19,7 +19,7 @@ mi:
   SiteTreeSubsites:
     CopyAction: Tārua
     CopyToSubsite: 'Tāruatia te whārangi ki te pae iti'
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 'Tāurutia te hanganga mai i:'
     CopyMessage: 'I hangaia he tārua o {title}'
     CustomExtraMeta: 'Ngā Tūtohu Meta Ritenga'
@@ -40,7 +40,7 @@ mi:
     ValidateTitle: 'Tāurua he "Taitara"'
   SubsiteAdmin:
     MENUTITLE: 'Ngā pae iti'
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Rohe
     PLURALNAME: 'Ngā Rohe Pae Iti'
     SINGULARNAME: 'Rohe Pae Iti'

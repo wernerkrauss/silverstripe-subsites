@@ -11,7 +11,7 @@ fa_IR:
   LeftAndMain_Menu:
     Hello: 'سلام'
     LOGOUT: خروج
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     CustomMetaKeywords: 'کلید واژه ها'
     CustomMetaTitle: عنوان
     DomainsHeadline: 'دامنه های این زیر سایت'
@@ -24,7 +24,7 @@ fa_IR:
     TabTitleConfig: پیکربندی
   SubsiteAdmin:
     MENUTITLE: 'زیر سایت ها'
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: 'دامنه'
     PLURALNAME: 'دامنه های زیر سایت'
     PROTOCOL_AUTOMATIC: 'به صورت خودکار'

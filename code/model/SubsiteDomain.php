@@ -10,7 +10,6 @@ use SilverStripe\Forms\OptionsetField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Subsites\Forms\WildcardDomainField;
 
-
 /**
  * @property string $Domain domain name of this subsite. Can include wildcards. Do not include the URL scheme here
  * @property string $Protocol Required protocol (http or https) if only one is supported. 'automatic' implies
@@ -21,11 +20,9 @@ use SilverStripe\Subsites\Forms\WildcardDomainField;
  */
 class SubsiteDomain extends DataObject
 {
-
     private static $table_name = 'SubsiteDomain';
 
     /**
-     *
      * @var string
      */
     private static $default_sort = '"IsPrimary" DESC';
@@ -40,22 +37,22 @@ class SubsiteDomain extends DataObject
     ];
 
     /**
-     * Specifies that this subsite is http only
+     * Specifies that this subsite is http only.
      */
     const PROTOCOL_HTTP = 'http';
 
     /**
-     * Specifies that this subsite is https only
+     * Specifies that this subsite is https only.
      */
     const PROTOCOL_HTTPS = 'https';
 
     /**
-     * Specifies that this subsite supports both http and https
+     * Specifies that this subsite supports both http and https.
      */
     const PROTOCOL_AUTOMATIC = 'automatic';
 
     /**
-     * Get the descriptive title for this domain
+     * Get the descriptive title for this domain.
      *
      * @return string
      */
@@ -65,7 +62,6 @@ class SubsiteDomain extends DataObject
     }
 
     /**
-     *
      * @var array
      */
     private static $has_one = [
@@ -74,6 +70,7 @@ class SubsiteDomain extends DataObject
 
     /**
      * @config
+     *
      * @var array
      */
     private static $summary_fields = [
@@ -91,9 +88,7 @@ class SubsiteDomain extends DataObject
     ];
 
     /**
-     * Whenever a Subsite Domain is written, rewrite the hostmap
-     *
-     * @return void
+     * Whenever a Subsite Domain is written, rewrite the hostmap.
      */
     public function onAfterWrite()
     {
@@ -101,17 +96,17 @@ class SubsiteDomain extends DataObject
     }
 
     /**
-     *
      * @return \FieldList
      */
     public function getCMSFields()
     {
         $protocols = [
-            self::PROTOCOL_HTTP => _t('SubsiteDomain.PROTOCOL_HTTP', 'http://'),
-            self::PROTOCOL_HTTPS => _t('SubsiteDomain.PROTOCOL_HTTPS', 'https://'),
-            self::PROTOCOL_AUTOMATIC => _t('SubsiteDomain.PROTOCOL_AUTOMATIC', 'Automatic')
+            self::PROTOCOL_HTTP => _t('SilverStripe\Subsites\Model\SubsiteDomain.PROTOCOL_HTTP', 'http://'),
+            self::PROTOCOL_HTTPS => _t('SilverStripe\Subsites\Model\SubsiteDomain.PROTOCOL_HTTPS', 'https://'),
+            self::PROTOCOL_AUTOMATIC => _t('SilverStripe\Subsites\Model\SubsiteDomain.PROTOCOL_AUTOMATIC', 'Automatic'),
         ];
-        $fields = new FieldList(
+
+        $fields = FieldList::create(
             WildcardDomainField::create('Domain', $this->fieldLabel('Domain'), null, 255)
                 ->setDescription(_t(
                     'SubsiteDomain.DOMAIN_DESCRIPTION',
@@ -119,37 +114,39 @@ class SubsiteDomain extends DataObject
                 )),
             OptionsetField::create('Protocol', $this->fieldLabel('Protocol'), $protocols)
                 ->setDescription(_t(
-                    'SubsiteDomain.PROTOCOL_DESCRIPTION',
-                    'When generating links to this subsite, use the selected protocol. <br />' .
+                    'SilverStripe\Subsites\Model\SubsiteDomain.PROTOCOL_DESCRIPTION',
+                    'When generating links to this subsite, use the selected protocol. <br />'.
                     'Selecting \'Automatic\' means subsite links will default to the current protocol.'
-                )), CheckboxField::create('IsPrimary', $this->fieldLabel('IsPrimary'))
+                )),
+            CheckboxField::create('IsPrimary', $this->fieldLabel('IsPrimary'))
             ->setDescription(_t(
-                'SubsiteDomain.PROTOCOL_DESCRIPTION',
+                'SilverStripe\Subsites\Model\SubsiteDomain.PROTOCOL_DESCRIPTION',
                 'Mark this as the default domain for this subsite'
-            )));
+            ))
+        );
 
         $this->extend('updateCMSFields', $fields);
+
         return $fields;
     }
 
     /**
-     *
      * @param bool $includerelations
+     *
      * @return array
      */
     public function fieldLabels($includerelations = true)
     {
         $labels = parent::fieldLabels($includerelations);
-        $labels['Domain'] = _t('SubsiteDomain.DOMAIN', 'Domain');
-        $labels['Protocol'] = _t('SubsiteDomain.Protocol', 'Protocol');
-        $labels['IsPrimary'] = _t('SubsiteDomain.IS_PRIMARY', 'Is Primary Domain?');
+        $labels['Domain'] = _t('SilverStripe\Subsites\Model\SubsiteDomain.DOMAIN', 'Domain');
+        $labels['Protocol'] = _t('SilverStripe\Subsites\Model\SubsiteDomain.Protocol', 'Protocol');
+        $labels['IsPrimary'] = _t('SilverStripe\Subsites\Model\SubsiteDomain.IS_PRIMARY', 'Is Primary Domain?');
 
         return $labels;
     }
 
     /**
      * Before writing the Subsite Domain, strip out any HTML the user has entered.
-     * @return void
      */
     public function onBeforeWrite()
     {
@@ -157,17 +154,17 @@ class SubsiteDomain extends DataObject
     }
 
     /**
-     * Get the link to this subsite
+     * Get the link to this subsite.
      *
      * @return string
      */
     public function Link()
     {
-        return $this->getFullProtocol() . $this->Domain;
+        return $this->getFullProtocol().$this->Domain;
     }
 
     /**
-     * Gets the full protocol (including ://) for this domain
+     * Gets the full protocol (including ://) for this domain.
      *
      * @return string
      */
@@ -176,18 +173,18 @@ class SubsiteDomain extends DataObject
         switch ($this->Protocol) {
             case self::PROTOCOL_HTTPS: {
                 return 'https://';
-            }
+                }
             case self::PROTOCOL_HTTP: {
                 return 'http://';
-            }
+                }
             default: {
                 return Director::protocol();
-            }
+                }
         }
     }
 
     /**
-     * Retrieves domain name with wildcards substituted with actual values
+     * Retrieves domain name with wildcards substituted with actual values.
      *
      * @todo Refactor domains into separate wildcards / primary domains
      *
@@ -212,17 +209,17 @@ class SubsiteDomain extends DataObject
     }
 
     /**
-     * Get absolute link for this domain
+     * Get absolute link for this domain.
      *
      * @return string
      */
     public function getAbsoluteLink()
     {
-        return $this->getFullProtocol() . $this->getSubstitutedDomain();
+        return $this->getFullProtocol().$this->getSubstitutedDomain();
     }
 
     /**
-     * Get absolute baseURL for this domain
+     * Get absolute baseURL for this domain.
      *
      * @return string
      */
@@ -230,6 +227,7 @@ class SubsiteDomain extends DataObject
     {
         return Controller::join_links(
             $this->getAbsoluteLink(),
-            Director::baseURL());
+            Director::baseURL()
+        );
     }
 }

@@ -21,13 +21,10 @@ use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
 /**
- * Decorator designed to add subsites support to LeftAndMain
- *
- * @package subsites
+ * Decorator designed to add subsites support to LeftAndMain.
  */
 class LeftAndMainSubsites extends Extension
 {
-
     private static $allowed_actions = ['CopyToSubsite'];
 
     /**
@@ -45,11 +42,12 @@ class LeftAndMainSubsites extends Extension
     }
 
     /**
-     * Set the title of the CMS tree
+     * Set the title of the CMS tree.
      */
     public function getCMSTreeTitle()
     {
         $subsite = Subsite::currentSubsite();
+
         return $subsite ? Convert::raw2xml($subsite->Title) : _t('LeftAndMain.SITECONTENTLEFT');
     }
 
@@ -61,11 +59,12 @@ class LeftAndMainSubsites extends Extension
     /**
      * Find all subsites accessible for current user on this controller.
      *
-     * @param bool $includeMainSite
+     * @param bool   $includeMainSite
      * @param string $mainSiteTitle
-     * @param null $member
+     * @param null   $member
+     *
      * @return ArrayList of <a href='psi_element://Subsite'>Subsite</a> instances.
-     * instances.
+     *                   instances.
      */
     public function sectionSites($includeMainSite = true, $mainSiteTitle = 'Main site', $member = null)
     {
@@ -90,7 +89,7 @@ class LeftAndMainSubsites extends Extension
         $extraCodes = Config::inst()->get($this->owner->class, 'required_permission_codes');
         if ($extraCodes !== false) {
             if ($extraCodes) {
-                $codes = array_merge($codes, (array)$extraCodes);
+                $codes = array_merge($codes, (array) $extraCodes);
             } else {
                 $codes[] = "CMS_ACCESS_{$this->owner->class}";
             }
@@ -158,7 +157,7 @@ class LeftAndMainSubsites extends Extension
             $output->push(new ArrayData([
                 'CurrentState' => $CurrentState,
                 'ID' => $subsite->ID,
-                'Title' => Convert::raw2xml($subsite->Title)
+                'Title' => Convert::raw2xml($subsite->Title),
             ]));
         }
 
@@ -185,6 +184,7 @@ class LeftAndMainSubsites extends Extension
         // It's not necessary to check access permissions here. Framework calls canView on the controller,
         // which in turn uses the Permission API which is augmented by our GroupSubsites.
         $controller = singleton($controllerName);
+
         return $controller->hasMethod('subsiteCMSShowInMenu') && $controller->subsiteCMSShowInMenu();
     }
 
@@ -195,9 +195,11 @@ class LeftAndMainSubsites extends Extension
 
     /**
      * Helper for testing if the subsite should be adjusted.
+     *
      * @param $adminClass
      * @param $recordSubsiteID
      * @param $currentSubsiteID
+     *
      * @return bool
      */
     public function shouldChangeSubsite($adminClass, $recordSubsiteID, $currentSubsiteID)
@@ -208,6 +210,7 @@ class LeftAndMainSubsites extends Extension
         if ($recordSubsiteID != $currentSubsiteID) {
             return true;
         }
+
         return false;
     }
 
@@ -221,8 +224,10 @@ class LeftAndMainSubsites extends Extension
         if ($member &&
             (
                 Permission::checkMember($member, 'ADMIN') || // 'Full administrative rights' in SecurityAdmin
-                Permission::checkMember($member,
-                    'CMS_ACCESS_LeftAndMain') // 'Access to all CMS sections' in SecurityAdmin
+                Permission::checkMember(
+                    $member,
+                    'CMS_ACCESS_LeftAndMain'
+                ) // 'Access to all CMS sections' in SecurityAdmin
             )
         ) {
             return true;
@@ -230,6 +235,7 @@ class LeftAndMainSubsites extends Extension
 
         // Check if we have access to current section on the current subsite.
         $accessibleSites = $this->owner->sectionSites(true, 'Main site', $member);
+
         return $accessibleSites->count() && $accessibleSites->find('ID', Subsite::currentSubsiteID());
     }
 
@@ -261,9 +267,12 @@ class LeftAndMainSubsites extends Extension
 
         // Catch forced subsite changes that need to cause CMS reloads.
         if (isset($_GET['SubsiteID'])) {
+            $session = Controller::curr()->getRequest()->getSession();
             // Clear current page when subsite changes (or is set for the first time)
-            if (!Session::get('SubsiteID') || $_GET['SubsiteID'] != Session::get('SubsiteID')) {
-                Session::clear("{$this->owner->class}.currentPage");
+            if (!$session->get('SubsiteID')
+                || $_GET['SubsiteID'] != $session->get('SubsiteID')
+            ) {
+                $session->clear("{$this->owner->class}.currentPage");
             }
 
             // Update current subsite in session
@@ -320,6 +329,7 @@ class LeftAndMainSubsites extends Extension
                     $accessibleSites = singleton($candidate->controller)->sectionSites(true, 'Main site', $member);
                     if ($accessibleSites->count()) {
                         Subsite::changeSubsite($accessibleSites->First()->ID);
+
                         return $this->owner->redirect(singleton($candidate->controller)->Link());
                     }
                 }
@@ -341,8 +351,10 @@ class LeftAndMainSubsites extends Extension
     public function onAfterSave($record)
     {
         if ($record->hasMethod('NormalRelated') && ($record->NormalRelated() || $record->ReverseRelated())) {
-            $this->owner->response->addHeader('X-Status',
-                rawurlencode(_t('LeftAndMainSubsites.Saved', 'Saved, please update related pages.')));
+            $this->owner->response->addHeader(
+                'X-Status',
+                rawurlencode(_t('LeftAndMainSubsites.Saved', 'Saved, please update related pages.'))
+            );
         }
     }
 
@@ -364,5 +376,4 @@ class LeftAndMainSubsites extends Extension
             $newPage->ID
         ));
     }
-
 }

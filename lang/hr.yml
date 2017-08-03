@@ -24,7 +24,7 @@ hr:
   SiteTreeSubsites:
     CopyAction: Kopiraj
     CopyToSubsite: 'Kopiraj stranicu u podsajt'
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 'Kopiraj strukturu od:'
     CopyMessage: 'Kreirana kopija od {title}'
     CustomExtraMeta: 'Prilagođeni Meta tagovi'
@@ -45,7 +45,7 @@ hr:
     ValidateTitle: 'Molimo dodajte "Naslov"'
   SubsiteAdmin:
     MENUTITLE: Podsajtovi
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: Domena
     DOMAIN_DESCRIPTION: 'Hostname ovog podsajta (bez protokola). Omogućava wildcard (*).'
     IS_PRIMARY: 'Da li je glavna domena?'

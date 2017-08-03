@@ -2,23 +2,18 @@
 
 namespace SilverStripe\Subsites\Forms;
 
-
 use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Control\Session;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\View\Requirements;
-
 
 /**
  * Wraps around a TreedropdownField to add ability for temporary
  * switching of subsite sessions.
- *
- * @package subsites
  */
 class SubsitesTreeDropdownField extends TreeDropdownField
 {
     private static $allowed_actions = [
-        'tree'
+        'tree',
     ];
 
     protected $subsiteID = 0;
@@ -46,12 +41,13 @@ class SubsitesTreeDropdownField extends TreeDropdownField
 
     public function tree(HTTPRequest $request)
     {
-        $oldSubsiteID = Session::get('SubsiteID');
-        Session::set('SubsiteID', $this->subsiteID);
+        $session = Controller::curr()->getRequest()->getSession();
+        $oldSubsiteID = $session->get('SubsiteID');
+        $session->set('SubsiteID', $this->subsiteID);
 
         $results = parent::tree($request);
 
-        Session::set('SubsiteID', $oldSubsiteID);
+        $session->set('SubsiteID', $oldSubsiteID);
 
         return $results;
     }

@@ -19,7 +19,7 @@ zh:
   SiteTreeSubsites:
     CopyAction: 复制
     CopyToSubsite: 将页面复制到子网站
-  Subsite:
+  SilverStripe\Subsites\Model\Subsite:
     COPYSTRUCTURE: 复制结构来自：
     CopyMessage: '已创建一个 {title} 的副本'
     CustomExtraMeta: '自定义 Meta 标签'
@@ -40,7 +40,7 @@ zh:
     ValidateTitle: '请添加一个“标题”'
   SubsiteAdmin:
     MENUTITLE: 多个子网站
-  SubsiteDomain:
+  SilverStripe\Subsites\Model\SubsiteDomain:
     DOMAIN: 域名
     PLURALNAME: 多个子网站域名
     SINGULARNAME: 子网站域名

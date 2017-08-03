@@ -2,7 +2,6 @@
 
 namespace SilverStripe\Subsites\Extensions;
 
-
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
@@ -23,23 +22,21 @@ use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Subsites\Model\Subsite;
 use SilverStripe\View\SSViewer;
 
-
 /**
- * Extension for the SiteTree object to add subsites support
+ * Extension for the SiteTree object to add subsites support.
  */
 class SiteTreeSubsites extends DataExtension
 {
-
     private static $has_one = [
         'Subsite' => Subsite::class, // The subsite that this page belongs to
     ];
 
     private static $many_many = [
-        'CrossSubsiteLinkTracking' => SiteTree::class // Stored separately, as the logic for URL rewriting is different
+        'CrossSubsiteLinkTracking' => SiteTree::class, // Stored separately, as the logic for URL rewriting is different
     ];
 
     private static $many_many_extraFields = [
-        'CrossSubsiteLinkTracking' => ['FieldName' => 'Varchar']
+        'CrossSubsiteLinkTracking' => ['FieldName' => 'Varchar'],
     ];
 
     public function isMainSite()
@@ -48,7 +45,8 @@ class SiteTreeSubsites extends DataExtension
     }
 
     /**
-     * Update any requests to limit the results to the current site
+     * Update any requests to limit the results to the current site.
+     *
      * @param SQLSelect $query
      * @param DataQuery $dataQuery
      */
@@ -72,7 +70,7 @@ class SiteTreeSubsites extends DataExtension
         } else {
             /*if($context = DataObject::context_obj()) $subsiteID = (int)$context->SubsiteID;
             else */
-            $subsiteID = (int)Subsite::currentSubsiteID();
+            $subsiteID = (int) Subsite::currentSubsiteID();
         }
 
         // The foreach is an ugly way of getting the first key :-)
@@ -111,21 +109,25 @@ class SiteTreeSubsites extends DataExtension
         if ($isDefaultSubsite && $subsitesMap) {
             $fields->addFieldToTab(
                 'Root.Main',
-                ToggleCompositeField::create('SubsiteOperations',
+                ToggleCompositeField::create(
+                    'SubsiteOperations',
                     _t('SiteTreeSubsites.SubsiteOperations', 'Subsite Operations'),
                     [
-                        new DropdownField('CopyToSubsiteID', _t('SiteTreeSubsites.CopyToSubsite',
-                            'Copy page to subsite'), $subsitesMap),
-                        new CheckboxField('CopyToSubsiteWithChildren',
-                            _t('SiteTreeSubsites.CopyToSubsiteWithChildren', 'Include children pages?')),
+                        new DropdownField('CopyToSubsiteID', _t(
+                            'SiteTreeSubsites.CopyToSubsite',
+                            'Copy page to subsite'
+                        ), $subsitesMap),
+                        new CheckboxField(
+                            'CopyToSubsiteWithChildren',
+                            _t('SiteTreeSubsites.CopyToSubsiteWithChildren', 'Include children pages?')
+                        ),
                         $copyAction = new FormAction(
                             'copytosubsite',
                             _t('SiteTreeSubsites.CopyAction', 'Copy')
-                        )
+                        ),
                     ]
                 )->setHeadingLevel(4)
             );
-
 
 //            $copyAction->includeDefaultJS(false);
         }
@@ -158,7 +160,7 @@ class SiteTreeSubsites extends DataExtension
         if (!$this->owner->SubsiteID) {
             return false;
         }
-        $sc = DataObject::get_one(SiteConfig::class, '"SubsiteID" = ' . $this->owner->SubsiteID);
+        $sc = DataObject::get_one(SiteConfig::class, '"SubsiteID" = '.$this->owner->SubsiteID);
         if (!$sc) {
             $sc = new SiteConfig();
             $sc->SubsiteID = $this->owner->SubsiteID;
@@ -166,15 +168,17 @@ class SiteTreeSubsites extends DataExtension
             $sc->Tagline = _t('Subsite.SiteConfigSubtitle', 'Your tagline here');
             $sc->write();
         }
+
         return $sc;
     }
 
     /**
      * Only allow editing of a page if the member satisfies one of the following conditions:
      * - Is in a group which has access to the subsite this page belongs to
-     * - Is in a group with edit permissions on the "main site"
+     * - Is in a group with edit permissions on the "main site".
      *
      * @param null $member
+     *
      * @return bool
      */
     public function canEdit($member = null)
@@ -205,6 +209,7 @@ class SiteTreeSubsites extends DataExtension
 
     /**
      * @param null $member
+     *
      * @return bool
      */
     public function canDelete($member = null)
@@ -218,6 +223,7 @@ class SiteTreeSubsites extends DataExtension
 
     /**
      * @param null $member
+     *
      * @return bool
      */
     public function canAddChildren($member = null)
@@ -231,6 +237,7 @@ class SiteTreeSubsites extends DataExtension
 
     /**
      * @param null $member
+     *
      * @return bool
      */
     public function canPublish($member = null)
@@ -243,11 +250,11 @@ class SiteTreeSubsites extends DataExtension
     }
 
     /**
-     * Create a duplicate of this page and save it to another subsite
+     * Create a duplicate of this page and save it to another subsite.
      *
-     * @param int|Subsite $subsiteID The Subsite to copy to, or its ID
-     * @param bool $includeChildren Recursively copy child Pages.
-     * @param int $parentID Where to place the Page in the SiteTree's structure.
+     * @param int|Subsite $subsiteID       The Subsite to copy to, or its ID
+     * @param bool        $includeChildren Recursively copy child Pages.
+     * @param int         $parentID        Where to place the Page in the SiteTree's structure.
      *
      * @return SiteTree duplicated page
      */
@@ -289,7 +296,8 @@ class SiteTreeSubsites extends DataExtension
     }
 
     /**
-     * Called by ContentController::init();
+     * Called by ContentController::init();.
+     *
      * @param $controller
      */
     public static function contentcontrollerInit($controller)
@@ -307,15 +315,18 @@ class SiteTreeSubsites extends DataExtension
         // This helps deal with Link() returning an absolute URL.
         $url = Director::absoluteURL($this->owner->Link());
         if ($this->owner->SubsiteID) {
-            $url = preg_replace('/\/\/[^\/]+\//', '//' . $this->owner->Subsite()->domain() . '/', $url);
+            $url = preg_replace('/\/\/[^\/]+\//', '//'.$this->owner->Subsite()->domain().'/', $url);
         }
+
         return $url;
     }
 
     /**
      * Use the CMS domain for iframed CMS previews to prevent single-origin violations
      * and SSL cert problems.
+     *
      * @param null $action
+     *
      * @return string
      */
     public function alternatePreviewLink($action = null)
@@ -324,18 +335,21 @@ class SiteTreeSubsites extends DataExtension
         if ($this->owner->SubsiteID) {
             $url = HTTP::setGetVar('SubsiteID', $this->owner->SubsiteID, $url);
         }
+
         return $url;
     }
 
     /**
      * Inject the subsite ID into the content so it can be used by frontend scripts.
+     *
      * @param $tags
+     *
      * @return string
      */
     public function MetaTags(&$tags)
     {
         if ($this->owner->SubsiteID) {
-            $tags .= '<meta name="x-subsite-id" content="' . $this->owner->SubsiteID . "\" />\n";
+            $tags .= '<meta name="x-subsite-id" content="'.$this->owner->SubsiteID."\" />\n";
         }
 
         return $tags;
@@ -362,9 +376,11 @@ class SiteTreeSubsites extends DataExtension
 
                         $origDisableSubsiteFilter = Subsite::$disable_subsite_filter;
                         Subsite::disable_subsite_filter(true);
-                        $candidatePage = DataObject::get_one(SiteTree::class,
-                            "\"URLSegment\" = '" . Convert::raw2sql(urldecode($rest)) . "' AND \"SubsiteID\" = " . $subsiteID,
-                            false);
+                        $candidatePage = DataObject::get_one(
+                            SiteTree::class,
+                            "\"URLSegment\" = '".Convert::raw2sql(urldecode($rest))."' AND \"SubsiteID\" = ".$subsiteID,
+                            false
+                        );
                         Subsite::disable_subsite_filter($origDisableSubsiteFilter);
 
                         if ($candidatePage) {
@@ -391,7 +407,7 @@ class SiteTreeSubsites extends DataExtension
         // If this page is being filtered in the current subsite, then no custom validation query is required.
         $subsite = Subsite::$force_subsite ?: Subsite::currentSubsiteID();
         if (empty($this->owner->SubsiteID) || $subsite == $this->owner->SubsiteID) {
-            return null;
+            return;
         }
 
         // Backup forced subsite
@@ -404,20 +420,21 @@ class SiteTreeSubsites extends DataExtension
         // Restore
         Subsite::$force_subsite = $prevForceSubsite;
 
-        return (bool)$isValid;
+        return (bool) $isValid;
     }
 
     /**
-     * Return a piece of text to keep DataObject cache keys appropriately specific
+     * Return a piece of text to keep DataObject cache keys appropriately specific.
      */
     public function cacheKeyComponent()
     {
-        return 'subsite-' . Subsite::currentSubsiteID();
+        return 'subsite-'.Subsite::currentSubsiteID();
     }
 
     /**
      * @param Member
-     * @return boolean|null
+     *
+     * @return bool|null
      */
     public function canCreate($member = null)
     {
@@ -431,5 +448,4 @@ class SiteTreeSubsites extends DataExtension
             }
         }
     }
-
 }

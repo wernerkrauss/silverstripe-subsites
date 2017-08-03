@@ -2,7 +2,6 @@
 
 namespace SilverStripe\Subsites\Extensions;
 
-
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HiddenField;
 use SilverStripe\ORM\DataExtension;
@@ -11,9 +10,8 @@ use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Subsites\Model\Subsite;
 
-
 /**
- * Extension for the SiteConfig object to add subsites support
+ * Extension for the SiteConfig object to add subsites support.
  */
 class SiteConfigSubsites extends DataExtension
 {
@@ -22,8 +20,9 @@ class SiteConfigSubsites extends DataExtension
     ];
 
     /**
-     * Update any requests to limit the results to the current site
-     * @param SQLSelect $query
+     * Update any requests to limit the results to the current site.
+     *
+     * @param SQLSelect      $query
      * @param DataQuery|null $dataQuery
      */
     public function augmentSQL(SQLSelect $query, DataQuery $dataQuery = null)
@@ -43,7 +42,7 @@ class SiteConfigSubsites extends DataExtension
             }
         }
 
-        $subsiteID = (int)Subsite::currentSubsiteID();
+        $subsiteID = (int) Subsite::currentSubsiteID();
 
         $froms = $query->getFrom();
         $froms = array_keys($froms);
@@ -62,16 +61,15 @@ class SiteConfigSubsites extends DataExtension
     }
 
     /**
-     * Return a piece of text to keep DataObject cache keys appropriately specific
+     * Return a piece of text to keep DataObject cache keys appropriately specific.
      */
     public function cacheKeyComponent()
     {
-        return 'subsite-' . Subsite::currentSubsiteID();
+        return 'subsite-'.Subsite::currentSubsiteID();
     }
 
     public function updateCMSFields(FieldList $fields)
     {
         $fields->push(new HiddenField('SubsiteID', 'SubsiteID', Subsite::currentSubsiteID()));
     }
-
 }
