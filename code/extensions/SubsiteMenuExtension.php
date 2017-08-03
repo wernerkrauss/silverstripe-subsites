@@ -2,9 +2,7 @@
 
 namespace SilverStripe\Subsites\Extensions;
 
-
 use SilverStripe\Core\Extension;
-
 
 /*
  * Simple extension to show admins in the menu of subsites.
@@ -18,10 +16,8 @@ use SilverStripe\Core\Extension;
 
 class SubsiteMenuExtension extends Extension
 {
-
     public function subsiteCMSShowInMenu()
     {
         return true;
     }
-
 }

@@ -2,12 +2,10 @@
 
 namespace SilverStripe\Subsites\Reports;
 
-
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TreeMultiselectField;
 use SilverStripe\Reports\ReportWrapper;
 use SilverStripe\Subsites\Model\Subsite;
-
 
 /**
  * Creates a subsite-aware version of another report.
@@ -15,7 +13,6 @@ use SilverStripe\Subsites\Model\Subsite;
  */
 class SubsiteReportWrapper extends ReportWrapper
 {
-
     /**
      * @return FieldList
      */
@@ -24,7 +21,7 @@ class SubsiteReportWrapper extends ReportWrapper
         $subsites = Subsite::accessible_sites('CMS_ACCESS_CMSMain', true);
         $options = $subsites->toDropdownMap('ID', 'Title');
 
-        $subsiteField = new TreeMultiselectField(
+        $subsiteField = TreeMultiselectField::create(
             'Subsites',
             _t('SubsiteReportWrapper.ReportDropdown', 'Sites'),
             $options
@@ -40,8 +37,9 @@ class SubsiteReportWrapper extends ReportWrapper
         if ($fields) {
             $fields->insertBefore($subsiteField, $fields->First()->Name());
         } else {
-            $fields = new FieldList($subsiteField);
+            $fields = FieldList::create($subsiteField);
         }
+
         return $fields;
     }
 
@@ -52,6 +50,7 @@ class SubsiteReportWrapper extends ReportWrapper
     {
         $columns = parent::columns();
         $columns['Subsite.Title'] = Subsite::class;
+
         return $columns;
     }
 
@@ -60,7 +59,6 @@ class SubsiteReportWrapper extends ReportWrapper
 
     /**
      * @param arary $params
-     * @return void
      */
     public function beforeQuery($params)
     {
@@ -72,17 +70,15 @@ class SubsiteReportWrapper extends ReportWrapper
         } else {
             $subsites = Subsite::accessible_sites('CMS_ACCESS_CMSMain');
             $options = $subsites->toDropdownMap('ID', 'Title');
-            Subsite::$force_subsite = join(',', array_keys($options));
+            Subsite::$force_subsite = implode(',', array_keys($options));
         }
     }
 
     /**
-     * @return void
      */
     public function afterQuery()
     {
         // Manually manage the subsite filtering
         Subsite::$force_subsite = null;
     }
-
 }

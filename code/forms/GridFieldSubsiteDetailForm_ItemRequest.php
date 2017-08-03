@@ -8,7 +8,6 @@ use SilverStripe\Subsites\Model\Subsite;
 
 class GridFieldSubsiteDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
 {
-
     private static $allowed_actions = [
         'ItemEditForm',
     ];
@@ -22,6 +21,7 @@ class GridFieldSubsiteDetailForm_ItemRequest extends GridFieldDetailForm_ItemReq
      * of letting Security/login put its log-in form inside a UI specified elsewhere.
      *
      * @return Form
+     *
      * @see GridFieldDetailForm_ItemRequest::ItemEditForm()
      */
     public function ItemEditForm()
@@ -35,9 +35,12 @@ class GridFieldSubsiteDetailForm_ItemRequest extends GridFieldDetailForm_ItemReq
                 $templateArray = $templates->map('ID', 'Title');
             }
 
-            $templateDropdown = new DropdownField('TemplateID', _t('Subsite.COPYSTRUCTURE', 'Copy structure from:'),
-                $templateArray);
-            $templateDropdown->setEmptyString('(' . _t('Subsite.NOTEMPLATE', 'No template') . ')');
+            $templateDropdown = DropdownField::create(
+                'TemplateID',
+                _t('Subsite.COPYSTRUCTURE', 'Copy structure from:'),
+                $templateArray
+            );
+            $templateDropdown->setEmptyString('('._t('Subsite.NOTEMPLATE', 'No template').')');
             $form->Fields()->addFieldToTab('Root.Configuration', $templateDropdown);
         }
 
@@ -56,5 +59,4 @@ class GridFieldSubsiteDetailForm_ItemRequest extends GridFieldDetailForm_ItemReq
 
         return parent::doSave($data, $form);
     }
-
 }

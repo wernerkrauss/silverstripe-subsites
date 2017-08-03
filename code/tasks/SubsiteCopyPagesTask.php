@@ -2,14 +2,12 @@
 
 namespace SilverStripe\Subsites\Tasks;
 
-
 use InvalidArgumentException;
 use SilverStripe\Dev\BuildTask;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Subsites\Model\Subsite;
 use SilverStripe\Subsites\Pages\SubsitesVirtualPage;
 use SilverStripe\Versioned\Versioned;
-
 
 /**
  * Handy alternative to copying pages when creating a subsite through the UI.
@@ -18,8 +16,6 @@ use SilverStripe\Versioned\Versioned;
  * process a large site outside of the UI.
  *
  * Example: sake dev/tasks/SubsiteCopyPagesTask from=<subsite-source> to=<subsite-target>
- *
- * @package subsites
  */
 class SubsiteCopyPagesTask extends BuildTask
 {
@@ -47,7 +43,7 @@ class SubsiteCopyPagesTask extends BuildTask
             throw new InvalidArgumentException('Subsite not found');
         }
 
-        $useVirtualPages = (bool)$request->getVar('virtual');
+        $useVirtualPages = (bool) $request->getVar('virtual');
 
         Subsite::changeSubsite($subsiteFrom);
 
@@ -87,6 +83,6 @@ class SubsiteCopyPagesTask extends BuildTask
 
     public function log($msg)
     {
-        echo $msg . "\n";
+        echo $msg."\n";
     }
 }

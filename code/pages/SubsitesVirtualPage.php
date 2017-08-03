@@ -2,11 +2,9 @@
 
 namespace SilverStripe\Subsites\Pages;
 
-
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\CMS\Model\VirtualPage;
 use SilverStripe\Control\Controller;
-use SilverStripe\Control\Session;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LabelField;
@@ -20,7 +18,6 @@ use SilverStripe\View\ArrayData;
 
 class SubsitesVirtualPage extends VirtualPage
 {
-
     private static $table_name = 'SubsitesVirtualPage';
 
     private static $description = 'Displays the content of a page on another subsite';
@@ -29,11 +26,11 @@ class SubsitesVirtualPage extends VirtualPage
         'CustomMetaTitle' => 'Varchar(255)',
         'CustomMetaKeywords' => 'Varchar(255)',
         'CustomMetaDescription' => 'Text',
-        'CustomExtraMeta' => 'HTMLText'
+        'CustomExtraMeta' => 'HTMLText',
     ];
 
     private static $non_virtual_fields = [
-        'SubsiteID'
+        'SubsiteID',
     ];
 
     public function getCMSFields()
@@ -63,7 +60,7 @@ class SubsitesVirtualPage extends VirtualPage
         $pageSelectionField = new SubsitesTreeDropdownField(
             'CopyContentFromID',
             _t('VirtualPage.CHOOSE', 'Choose a page to link to'),
-            "SilverStripe\\CMS\\Model\\SiteTree",
+            'SilverStripe\\CMS\\Model\\SiteTree',
             'ID',
             'MenuTitle'
         );
@@ -76,10 +73,10 @@ class SubsitesVirtualPage extends VirtualPage
 
         // Create links back to the original object in the CMS
         if ($this->CopyContentFromID) {
-            $editLink = "admin/pages/edit/show/$this->CopyContentFromID/?SubsiteID=" . $this->CopyContentFrom()->SubsiteID;
+            $editLink = "admin/pages/edit/show/$this->CopyContentFromID/?SubsiteID=".$this->CopyContentFrom()->SubsiteID;
             $linkToContent = "
-				<a class=\"cmsEditlink\" href=\"$editLink\">" .
-                _t('VirtualPage.EDITCONTENT', 'Click here to edit the content') .
+				<a class=\"cmsEditlink\" href=\"$editLink\">".
+                _t('VirtualPage.EDITCONTENT', 'Click here to edit the content').
                 '</a>';
             $fields->removeByName('VirtualPageContentLinkLabel');
             $fields->addFieldToTab(
@@ -89,7 +86,6 @@ class SubsitesVirtualPage extends VirtualPage
             );
             $linkToContentLabelField->setAllowHTML(true);
         }
-
 
         $fields->addFieldToTab(
             'Root.Main',
@@ -140,7 +136,9 @@ class SubsitesVirtualPage extends VirtualPage
 
     public function getCopyContentFromID_SubsiteID()
     {
-        return $this->CopyContentFromID ? (int)$this->CopyContentFrom()->SubsiteID : (int)Session::get('SubsiteID');
+        $session = Controller::curr()->getRequest()->getSession();
+
+        return $this->CopyContentFromID ? (int) $this->CopyContentFrom()->SubsiteID : (int) $session->get('SubsiteID');
     }
 
     public function getVirtualFields()
